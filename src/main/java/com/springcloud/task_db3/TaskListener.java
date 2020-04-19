@@ -1,8 +1,6 @@
 package com.springcloud.task_db3;
 
-import com.springcloud.task_db3.db.repositories.BookRepository;
 import org.hibernate.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.task.listener.TaskExecutionListener;
 import org.springframework.cloud.task.repository.TaskExecution;
 
@@ -15,8 +13,6 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class TaskListener implements TaskExecutionListener {
-    @Autowired
-    private BookRepository bookRepository;
     Logger logger = Logger.getLogger("logger");
     FileHandler fh;
 
