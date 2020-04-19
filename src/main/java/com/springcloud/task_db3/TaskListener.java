@@ -36,27 +36,28 @@ public class TaskListener implements TaskExecutionListener {
         File folder = new File(newestFolder());
         File file = null;
         try {file = folder.listFiles()[0];} catch (NullPointerException npe) {
-            logger.info("No files in database");
+            logger.info("Error uploading the file to the database");
         }
         FileReader fr=null;
         try {
             fr = new FileReader(file);
-        } catch (FileNotFoundException fnfe) {logger.info("Folder not found");}
+        } catch (FileNotFoundException fnfe) {logger.info("Error uploading the file to the database");}
         try {
             try (BufferedReader br = new BufferedReader(fr)) {
-                Session session = HibernateUtil.getSessionFactory().openSession();
-                session.beginTransaction();
-
                 String line;
+                Session session = HibernateUtil.getSessionFactory().openSession();
+
                 while ((line = br.readLine()) != null) {
+                    session.beginTransaction();
                     session.createSQLQuery(line).executeUpdate();
                     session.getTransaction().commit();
                 }
 
+                logger.info("Dump executed successfully");
                 session.close();
             }
         } catch (IOException e) {
-            logger.info("IOException");
+            logger.info("Error reading the file");
         }
     }
 
